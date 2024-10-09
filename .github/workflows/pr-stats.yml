@@ -33,12 +33,12 @@ jobs:
       - name: Print Current Directory and List Files
         run: |
           pwd
-          ls -al
+          ls -alR
 
 
 
       - name: Analyze PR Stats and Notify
         run: |
-          python ./scripts/pr-stats.py
+          python .github/scripts/pr-stats.py
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
