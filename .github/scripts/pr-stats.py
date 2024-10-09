@@ -150,10 +150,11 @@ def extract_important_info(pr_data):
 def generate_report(pr_stats):
     pr = extract_important_info(pr_stats)
 
+    print(pr)
     # 정보 추출
-    title = convert_timestamp_to_kst(pr['title'])
     created_at = convert_timestamp_to_kst(pr['createdAt'])
     merged_at = convert_timestamp_to_kst(pr['mergedAt'])
+    title = pr['title']
     file_count = pr['fileCount']
     changed_line_count = pr['changedLineCount']
     conversation_count = pr['changedLineCount']
