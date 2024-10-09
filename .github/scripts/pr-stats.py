@@ -12,7 +12,12 @@ slack_webhook_url = os.getenv("SLACK_WEBHOOK_URL")
 pr_html_url = os.getenv("PR_HTML_URL")
 assignee = os.getenv("ASSIGNEE")
 
+users = {
+    "youngsu5582" : "조휘선"
+}
+
 def construct_message(title,created_at,merged_at,file_count,line_count,conversation_count,response_time,approval_time):
+    name = users.get(assignee,"누군가")
     slack_message= {
             "blocks": [
                 {
