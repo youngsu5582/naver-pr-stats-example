@@ -24,7 +24,7 @@ def construct_message(title,created_at,merged_at,file_count,line_count,conversat
                     "type": "section",
                     "text": {
                         "type": "mrkdwn",
-                        "text": f"<{pr_html_url}|{title}> 이 머지되었습니다. 😎 ( 수고했어요 {assignee} )"
+                        "text": f"<{pr_html_url}|{title}> 이 머지되었습니다. 😎 ( 수고했어요 <span style="color:rgb(146, 208, 80)">{name}</span> )"
                     }
                 },
                 {
