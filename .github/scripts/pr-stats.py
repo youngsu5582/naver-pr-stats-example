@@ -9,7 +9,7 @@ KST = timezone(timedelta(hours=9))
 
 # Slack Webhook URL 설정 (GitHub Secrets에서 불러옴)
 slack_webhook_url = os.getenv("SLACK_WEBHOOK_URL")
-pr_html_url = os.getenv("PULL_REQUEST_URL")
+pr_html_url = os.getenv("PR_HTML_URL")
 assignee = os.getenv("ASSIGNEE")
 
 def construct_message(title,created_at,merged_at,file_count,line_count,conversation_count,response_time,approval_time):
