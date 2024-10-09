@@ -96,6 +96,7 @@ def construct_message(title,created_at,merged_at,file_count,line_count,conversat
                 }
             ]
     }
+    print(slack_message)
     return slack_message
     
 
