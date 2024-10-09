@@ -1,0 +1,25 @@
+# .github/workflows/pr-stats.yml
+name: PR Stats and Notifications
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    types:
+      - opened
+      - closed
+
+jobs:
+  pr-stats-job:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: PR Stats
+        uses: "naver/pr-stats@v1.0.0"
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v5
