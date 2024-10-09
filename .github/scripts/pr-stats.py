@@ -168,5 +168,6 @@ def generate_report(pr_stats):
     send_slack_message_via_webhook(message)
 
 # 실행
+print(slack_webhook_url[:10])
 pr_stats = analyze_csv('./stats/pr.csv')
 generate_report(pr_stats)
