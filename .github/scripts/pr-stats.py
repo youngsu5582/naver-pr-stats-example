@@ -105,10 +105,7 @@ def send_slack_message_via_webhook(message):
     headers = {
         'Content-Type': 'application/json',
     }
-    payload = {
-        "text": message
-    }
-    response = requests.post(slack_webhook_url, headers=headers, data=json.dumps(payload))
+    response = requests.post(slack_webhook_url, headers=headers, data=json.dumps(message))
 
     if response.status_code != 200:
         raise ValueError(f"Request to Slack returned an error {response.status_code}, the response is:\n{response.text}")
