@@ -8,7 +8,7 @@ on:
 
 jobs:
   pr-stats-job:
-    if: github.event.pull_request.merged == true  # PR이 merge된 경우에만 실행
+    if: github.event.pull_request.merged == false  # PR이 merge된 경우에만 실행
     runs-on: ubuntu-latest
 
     steps:
@@ -23,7 +23,7 @@ jobs:
       - name: Install Python dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install slack_sdk smtplib
+          pip install slack_sdk
 
       - name: Run PR Stats
         uses: "naver/pr-stats@v1.0.0"
