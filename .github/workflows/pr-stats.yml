@@ -30,8 +30,15 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Print Current Directory and List Files
+        run: |
+          pwd
+          ls -al
+
+
+
       - name: Analyze PR Stats and Notify
         run: |
-          python ./github/scripts/pr-stats.py
+          python ./scripts/pr-stats.py
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
