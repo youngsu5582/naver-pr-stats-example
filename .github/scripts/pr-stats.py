@@ -165,7 +165,7 @@ def generate_report(pr_stats):
     # 정보 추출
     created_at = convert_timestamp_to_kst(created_at_timestamp)
     merged_at = convert_timestamp_to_kst(merged_at_timestamp)
-    difference = format_duration(merged_at_timestamp-created_at_timestamp)
+    difference = format_duration(int(merged_at_timestamp)-int(created_at_timestamp))
     title = pr['title']
     file_count = pr['fileCount']
     changed_line_count = pr['changedLineCount']
