@@ -13,10 +13,16 @@ pr_html_url = os.getenv("PR_HTML_URL")
 assignee = os.getenv("ASSIGNEE")
 
 users = {
-    "youngsu5582" : "조휘선"
+    "youngsu5582" : "조휘선",
+    "hjk0761" : "무빈",
+    "ashsty" : "애쉬",
+    "jcoding-play" : "뽀로로",
+    "pp449" : "다르",
+    "00kang" : "초코",
+    "chlwlstlf" : "텐텐"
 }
 
-def construct_message(title,created_at,merged_at,file_count,line_count,conversation_count,response_time,approval_time):
+def construct_message(title,created_at,merged_at,difference,file_count,line_count,conversation_count,response_time,approval_time):
     name = users.get(assignee,"누군가")
     slack_message= {
             "blocks": [
@@ -24,7 +30,7 @@ def construct_message(title,created_at,merged_at,file_count,line_count,conversat
                     "type": "section",
                     "text": {
                         "type": "mrkdwn",
-                        "text": f"<{pr_html_url}|{title}> 이 머지되었습니다. 😎 ( 수고했어요 <span style='color:rgb(146, 208, 80)'>{name}</span> )"
+                        "text": f"<{pr_html_url}|{title}> 이 머지되었습니다. 😎 ( 수고했어요 {name} )"
                     }
                 },
                 {
@@ -51,7 +57,7 @@ def construct_message(title,created_at,merged_at,file_count,line_count,conversat
                                     "elements": [
                                         {
                                             "type": "text",
-                                            "text": f"PR 기간 : {created_at} ~ {merged_at} "
+                                            "text": f"PR 기간 : {created_at} ~ {merged_at} ( 소요 시간 : {difference} )"
                                         }
                                     ]
                                 },
@@ -82,7 +88,7 @@ def construct_message(title,created_at,merged_at,file_count,line_count,conversat
                                     "elements": [
                                         {
                                             "type": "text",
-                                            "text": f"응답 시간 : {response_time}"
+                                            "text": f"평균 응답 시간 : {response_time}"
                                         }
                                     ]
                                 },
@@ -91,7 +97,7 @@ def construct_message(title,created_at,merged_at,file_count,line_count,conversat
                                     "elements": [
                                         {
                                             "type": "text",
-                                            "text": f"승인 시간 : {approval_time}"
+                                            "text": f"평균 승인 시간 : {approval_time}"
                                         }
                                     ]
                                 }
@@ -103,7 +109,7 @@ def construct_message(title,created_at,merged_at,file_count,line_count,conversat
     }
     print(slack_message)
     return slack_message
-    
+
 
 # Slack Webhook 메시지 전송 함수
 def send_slack_message_via_webhook(message):
@@ -124,7 +130,7 @@ def convert_timestamp_to_kst(timestamp_ms):
 # 밀리초 시간을 사람이 읽을 수 있는 형식으로 변환하는 함수
 def format_duration(ms):
     if ms == 'NaN':
-        return "N/A "
+        return "N/A"
 
     total_seconds = int(ms) / 1000
     days, remainder = divmod(total_seconds, 86400)  # 86400초 = 1일
@@ -154,9 +160,12 @@ def generate_report(pr_stats):
     pr = extract_important_info(pr_stats)
 
     print(pr)
+    created_at_timestamp = pr['createdAt']
+    merged_at_timestamp = pr['mergedAt']
     # 정보 추출
-    created_at = convert_timestamp_to_kst(pr['createdAt'])
-    merged_at = convert_timestamp_to_kst(pr['mergedAt'])
+    created_at = convert_timestamp_to_kst(created_at_timestamp)
+    merged_at = convert_timestamp_to_kst(merged_at_timestamp)
+    difference = format_duration(merged_at_timestamp-created_at_timestamp)
     title = pr['title']
     file_count = pr['fileCount']
     changed_line_count = pr['changedLineCount']
@@ -165,12 +174,11 @@ def generate_report(pr_stats):
     # 시간 포맷팅
     response_time = format_duration(pr['averageResponseTime'])
     approval_time = format_duration(pr['averageTimeToApproval'])
-    
-    message = construct_message(title,created_at,merged_at,file_count,changed_line_count,conversation_count,response_time,approval_time)
-    
+
+    message = construct_message(title,created_at,merged_at,difference,file_count,changed_line_count,conversation_count,response_time,approval_time)
+
     send_slack_message_via_webhook(message)
 
 # 실행
-print(slack_webhook_url[:10])
 pr_stats = analyze_csv('./stats/pr.csv')
 generate_report(pr_stats)
